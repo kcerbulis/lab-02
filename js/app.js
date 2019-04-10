@@ -4,7 +4,7 @@
 
 // ------------- Initializing global variables---------------------------
 const allAnimalObjectArray = [];
-
+const keywordArray = [];
 
 
 
@@ -22,10 +22,24 @@ function Animal (animal){
   allAnimalObjectArray.push(this);
 }
 
+Animal.prototype.render_keyword_to_dropdown = function (){
+  const check_word = this.keyword;
+  if (keywordArray.includes(check_word)) {
+    console.log("checking");
+    return;
+  }
+  const option = $('#dropdown').html();
+  $('#dropdown').append('<option id="next_animal"></option>');
+
+  $('#next_animal').text(this.keyword);
+  $('#next_animal').attr('id', '');
+
+  keywordArray.push(this.keyword);
+}
 
 
 
-Animal.prototype.render_to_page = function (){
+Animal.prototype.render_img_to_page = function (){
   const selected_img = $('#img_1_container').html();
 
 
@@ -57,10 +71,12 @@ Animal.getting_horns = () =>{
       new Animal (animal);
     })
     allAnimalObjectArray.forEach(animal =>{
-    animal.render_to_page();
+      animal.render_img_to_page();
+    })
+    allAnimalObjectArray.forEach(animal =>{
+      animal.render_keyword_to_dropdown();
     })
   });
 }
 
 Animal.getting_horns();
-console.log(allAnimalObjectArray);
