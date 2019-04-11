@@ -5,6 +5,7 @@
 // ------------- Initializing global variables---------------------------
 let allAnimalObjectArray = [];
 const keywordArray = [];
+const hornsArray = [];
 
 const hornHtml = $('#horn-template').html();
 const template = Handlebars.compile(hornHtml);
@@ -50,8 +51,8 @@ Animal.prototype.render_keyword_to_dropdown = function (){
   if (keywordArray.includes(check_word)) {
     return;
   }
-  const option = $('#dropdown').html();
-  $('#dropdown').append('<option id="next_animal"></option>');
+  const option = $('#dropdown_title').html();
+  $('#dropdown_title').append('<option id="next_animal"></option>');
 
   $('#next_animal').text(this.keyword);
   $('#next_animal').attr('id', '');
@@ -60,6 +61,19 @@ Animal.prototype.render_keyword_to_dropdown = function (){
 }
 
 
+Animal.prototype.render_horns_to_dropdown = function(){
+  const check_number = this.horns;
+  if (hornsArray.includes(check_number)) {
+    return;
+  }
+  const option = $('#dropdown_horns').html();
+  $('#dropdown_horns').append('<option id="next_horn"></option>');
+
+  $('#next_horn').text(this.horns);
+  $('#next_horn').attr('id', '');
+
+  hornsArray.push(this.horns);
+}
 
 //-------------------Initializing the content--------------------------
 Animal.initialize_the_content = (data_set) =>{
@@ -75,6 +89,9 @@ Animal.initialize_the_content = (data_set) =>{
     })
     allAnimalObjectArray.forEach(animal =>{
       animal.render_keyword_to_dropdown();
+    })
+    allAnimalObjectArray.forEach(animal =>{
+      animal.render_horns_to_dropdown();
     })
   });
 
@@ -99,14 +116,68 @@ $('input').on('click', (e) =>{
   }
 })
 
+//-----------Still working on feature 4----------------------------
+//
+// $('input').on('click', (e) =>{
+//   if(e.target.checked){
+//     sorting_horns(hornsArray);
+//   }
+//   else {
+//     allAnimalObjectArray = [];
+//     $('div[id="container"]').detach();
+//     $('body').append('<div id="container"></div>');
+//     Animal.initialize_the_content('data/page-1.json');
+//   }
+// })
+
+
+
+const sorting_horns = (arr) =>{
+  arr.sort((a, b) =>{
+    if(a.horns > b.horns){
+      return 1;
+    }
+    if(a.horns < b.horns){
+      return -1;
+    }
+    return 0;
+  })
+  return arr;
+}
+
+
+
+
 
 //Dropdown box selection filtering
-$('#dropdown').on('change', function(){
+$('#dropdown_title').on('change', function(){
   let $selectedAnimal = $(this).val();
   $('div').hide();
   console.log($(`div[class = "${$selectedAnimal}"]`));
   $(`div[class = "${$selectedAnimal}"]`).show();
 });
+
+
+
+
+
+//Dropdown horn selection filtering
+$('#dropdown_horns').on('change', function(){
+  let $selectedHorns = $(this).val();
+  $('div').hide();
+  console.log($(`div[class = "${$selectedHorns}"]`));
+  $(`div[class = "${$selectedHorns}"]`).show();
+});
+
+
+
+
+
+
+
+
+
+
 
 
 
