@@ -25,3 +25,8 @@ select{
   width: 100px;
   height: 40px;
 }
+
+footer{
+  margin-top: 5%;
+  clear: both;
+}

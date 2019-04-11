@@ -3,9 +3,8 @@
 
 
 // ------------- Initializing global variables---------------------------
-const allAnimalObjectArray = [];
+let allAnimalObjectArray = [];
 const keywordArray = [];
-
 
 
 
@@ -35,7 +34,7 @@ Animal.prototype.render_img_to_page = function (){
   $('#next_img_container').attr('class', this.keyword);
   $('#next_img_container').find('h2').text(this.title);
   $('#next_img_container').find('p').text(this.description);
-  $('#next_img_container').attr('id', '');
+  $('#next_img_container').attr('id', 'page_1_container');
 }
 
 //Adds key words to dropdown menu
@@ -64,8 +63,11 @@ $('#dropdown').on('change', function(){
 
 
 //-------------------Initializing the content--------------------------
-Animal.initialize_the_content = () =>{
-  $.get('data/page-1.json', 'json').then(data =>{
+Animal.initialize_the_content = (data_set) =>{
+
+
+
+  $.get(data_set, 'json').then(data =>{
     data.forEach(animal =>{
       new Animal (animal);
     })
@@ -76,6 +78,26 @@ Animal.initialize_the_content = () =>{
       animal.render_keyword_to_dropdown();
     })
   });
+
 }
 
-Animal.initialize_the_content();
+
+// Messing with day 4 feature 1 code
+// Loads the page 2 p
+$('input').on('click', (e) =>{
+  if(e.target.checked){
+    allAnimalObjectArray = [];
+    // Whipes all of the photos off of the page
+    $('div[id="page_1_container"]').detach();
+    Animal.initialize_the_content('data/page-2.json');
+  }
+  else {
+    allAnimalObjectArray = [];
+    $('div[id="page_1_container"]').detach();
+    Animal.initialize_the_content('data/page-1.json');
+  }
+})
+
+
+
+Animal.initialize_the_content('data/page-1.json');
