@@ -45,7 +45,8 @@ Animal.prototype.render_keyword_to_dropdown = function (){
   keywordArray.push(this.keyword);
 }
 
-
+//Adds number of horms to dropdown menu
+//Filters out duplicates
 Animal.prototype.render_horns_to_dropdown = function(){
   const check_number = this.horns;
   if (hornsArray.includes(check_number)) {
@@ -55,27 +56,27 @@ Animal.prototype.render_horns_to_dropdown = function(){
 
   $('#next_horn').text(this.horns);
   $('#next_horn').attr('id', '');
-
   hornsArray.push(this.horns);
 }
 
-//-------------------Initializing the content--------------------------
-Animal.initialize_the_content = (data_set) =>{
-  $.get(data_set, 'json').then(data =>{
-    data.forEach(animal =>{new Animal (animal);})
-    allAnimalObjectArray.forEach(animal => {animal.render_img_to_page();})
-    allAnimalObjectArray.forEach(animal => {animal.render_keyword_to_dropdown();})
-    allAnimalObjectArray.forEach(animal => {animal.render_horns_to_dropdown();})
-  });
+//Filters images based on title selected from dropdown menu
+$('#dropdown_title').on('change', function(){
+  let $selectedAnimal = $(this).val();
+  $('div').hide();
+  $(`div[class = "${$selectedAnimal}"]`).show();
+});
 
-}
+//Filteres images based on number of horns from dropdown menu
+$('#dropdown_horns').on('change', function(){
+  let $selectedHorns = $(this).val();
+  $('div').hide();
+  $(`div[data-horns = "${$selectedHorns}"]`).show();
+});
 
-
-// Messing with day 4 feature 1 code
-// Loads the page 2 p
+//--------------Event Listeners--------------------------------
+// Toggles data of two pages on click of checkbox
 $('input').on('click', (e) =>{
   if(e.target.checked){
-    console.log('Checked');
     allAnimalObjectArray = [];
     // Whipes all of the photos off of the page
     $('section[id="container"]').detach();
@@ -90,29 +91,38 @@ $('input').on('click', (e) =>{
   }
 })
 
-//-----------Still working on feature 4----------------------------
-$('nav').on('click', 'button.num', function() {
+//Sorts images based on number of horns, after button is clicked
+$('button.sortNum').on('click', function() {
+  $('section[id="container"]').detach();
   allAnimalObjectArray.sort((a,b) => {
     if(a.horns > b.horns) return 1;
     if(a.horns < b.horns) return -1;
     return 0;
   })
-  $('section[id="container]').detach();
+  $('main').append('<section id="container" class="deck"></section>');
   allAnimalObjectArray.forEach(animal => animal.render_img_to_page());
 })
 
-//Dropdown box selection filtering
-$('#dropdown_title').on('change', function(){
-  let $selectedAnimal = $(this).val();
-  $('div').hide();
-  $(`div[class = "${$selectedAnimal}"]`).show();
-});
+//Sorts images by title alphabetically, after button is clicked
+$('button.sortAlph').on('click', function() {
+  $('section[id="container"]').detach();
+  allAnimalObjectArray.sort((a,b) => {
+    if(a.title > b.title) return 1;
+    if(a.title < b.title) return -1;
+    return 0;
+  })
+  $('main').append('<section id="container" class="deck"></section>');
+  allAnimalObjectArray.forEach(animal => animal.render_img_to_page());
+})
 
-//Dropdown horn selection filtering
-$('#dropdown_horns').on('change', function(){
-  let $selectedHorns = $(this).val();
-  $('div').hide();
-  $(`div[data-horns = "${$selectedHorns}"]`).show();
-});
+//-------------------Initializing the content--------------------------
+Animal.initialize_the_content = (data_set) =>{
+  $.get(data_set, 'json').then(data =>{
+    data.forEach(animal =>{new Animal (animal);})
+    allAnimalObjectArray.forEach(animal => {animal.render_img_to_page();})
+    allAnimalObjectArray.forEach(animal => {animal.render_keyword_to_dropdown();})
+    allAnimalObjectArray.forEach(animal => {animal.render_horns_to_dropdown();})
+  });
+}
 
 Animal.initialize_the_content('data/page-1.json');
