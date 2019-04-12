@@ -12,7 +12,7 @@
     <title>Tripod</title>
 
     <script id="horn-template" type="text/x-handlebars-template">
-      <div class="{{ keyword }}">
+      <div class="{{ keyword }}" data-horns="{{ horns }}">
         <h2>{{title}}</h2><br>
         <img src="{{ image_url }}" alt="{{ name }}"><br>
         <p>{{ description }}</p>
@@ -28,13 +28,16 @@
 
 
     <select id="dropdown_title">
+      <option>Filter by Keyword</option>
     </select>
 
     <select id="dropdown_horns">
+      <option>Filter by Number of Horns</option>
     </select>
 
-    <input id="img_checkbox" type="checkbox">More Image?
-    <input id="horn_checkbox" type="checkbox">Sort By Horns?
+    <input id="img_checkbox" type="checkbox">Next Page?
+    <button class="num">Sort By Horns?</button>
+    <button>Sort Alphabetically?</button>
 </nav>
 
   <main>
