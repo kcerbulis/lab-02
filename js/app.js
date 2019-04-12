@@ -4,8 +4,8 @@
 
 // ------------- Initializing global variables---------------------------
 let allAnimalObjectArray = [];
-const keywordArray = [];
-const hornsArray = [];
+let keywordArray = [];
+let hornsArray = [];
 
 const hornHtml = $('#horn-template').html();
 const template = Handlebars.compile(hornHtml);
@@ -40,7 +40,7 @@ Animal.prototype.render_keyword_to_dropdown = function (){
   $('#dropdown_title').append('<option id="next_animal"></option>');
 
   $('#next_animal').text(this.keyword);
-  $('#next_animal').attr('id', '');
+  $('#next_animal').attr('id', 'keywords_on_page');
 
   keywordArray.push(this.keyword);
 }
@@ -55,7 +55,7 @@ Animal.prototype.render_horns_to_dropdown = function(){
   $('#dropdown_horns').append('<option id="next_horn"></option>');
 
   $('#next_horn').text(this.horns);
-  $('#next_horn').attr('id', '');
+  $('#next_horn').attr('id', 'horns_on_page');
   hornsArray.push(this.horns);
 }
 
@@ -78,14 +78,22 @@ $('#dropdown_horns').on('change', function(){
 $('input').on('click', (e) =>{
   if(e.target.checked){
     allAnimalObjectArray = [];
-    // Whipes all of the photos off of the page
+    keywordArray = [];
+    hornsArray = [];
+    // Whipes all the images, keywords, and horns on the page/dropdown
     $('section[id="container"]').detach();
+    $('option[id="keywords_on_page"]').detach();
+    $('option[id="horns_on_page"]').detach();
     $('main').append('<section id="container" class="deck"></section>');
     Animal.initialize_the_content('data/page-2.json');
   }
   else {
     allAnimalObjectArray = [];
+    keywordArray = [];
+    hornsArray = [];
     $('section[id="container"]').detach();
+    $('option[id="keywords_on_page"]').detach();
+    $('option[id="horns_on_page"]').detach();
     $('main').append('<section id="container" class="deck"></section>');
     Animal.initialize_the_content('data/page-1.json');
   }
